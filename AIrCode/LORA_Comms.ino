@@ -27,7 +27,7 @@
 // Singleton instance of the radio driver
 RH_RF95 rf95(RFM95_CS, RFM95_INT);
 
-Uart Serial3 (&sercom3, 20, 21, SERCOM_RX_PAD_1, UART_TX_PAD_0); // TX on pin 20
+Uart Serial3 (&sercom3, 21, 20, SERCOM_RX_PAD_1, UART_TX_PAD_0); // TX on pin 20
 void SERCOM3_Handler()
 {
   Serial3.IrqHandler();
@@ -57,6 +57,9 @@ void setup()
   Serial.begin(9600);
   Serial3.begin(UBLOX_BAUD);
   Serial2.begin(XBEE_BAUD);
+  while (!Serial) {
+    delay(1);
+  }
 
   xBee.init('A');
   xBee.enterATmode();
@@ -96,10 +99,9 @@ void setup()
   delay(10);
   digitalWrite(RFM95_RST, HIGH);
   delay(10);
- 
+  
   while (!rf95.init()) {
     Serial.println("LoRa radio init failed");
-    Serial.println("Uncomment '#define SERIAL_DEBUG' in RH_RF95.cpp for detailed debug info");
     while (1);
   }
   Serial.println("LoRa radio init OK!");
@@ -125,8 +127,8 @@ void setup()
   ublox.init();
   delay(200);
   
-  Serial.print("testing");
-  for (byte j = 0; j<50; j++) {
+  Serial.println("testing ublox");
+  for (byte j = 0; j<=50; j++) {
     if (ublox.setAirborne()) {
       Serial.println("Air mode successfully set.");
       break;
