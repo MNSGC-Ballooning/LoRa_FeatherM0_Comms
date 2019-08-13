@@ -46,7 +46,7 @@ char radiopacket[100];
 
 //XBee Object
 String ID = "LORA";
-RelayXBee xBee = RelayXBee(&Serial3, ID);
+RelayXBee xBee = RelayXBee(&Serial2, ID);
 
 
 //SD Logging
